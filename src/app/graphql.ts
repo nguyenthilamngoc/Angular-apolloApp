@@ -10,6 +10,16 @@ export const ALL_LINKS_QUERY = gql`
       createdAt
       url
       description
+      postedBy {
+        id
+        name
+      }
+      votes {
+        id
+        user {
+          id
+        }
+      }
     }
   }
 `;

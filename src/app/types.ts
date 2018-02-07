@@ -1,11 +1,21 @@
-export class Link{
-    constructor(public id:string, public description:string, public url:string){
-       this.id = id;
-       this.description = description;
-       this.url = url;
-    }
-}
-
-export class User{
-    
-}
+export class Link {
+    id?: string;
+    description?: string;
+    url?: string;
+    createdAt?: string;
+    postedBy?: User;
+    votes?: Vote[];
+  }
+  
+  export class User {
+    id?: string;
+    name?: string;
+    email?: string;
+    votes?: Vote[];
+  }
+  
+  export class Vote {
+    id?: string;
+    user?: User;
+    link?: Link;
+  }
