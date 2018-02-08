@@ -5,7 +5,7 @@ import {RouterModule, Routes} from '@angular/router';
 import {LinkListComponent} from './link-list/link-list.component';
 import {CreateLinkComponent} from './create-link/create-link.component';
 import {LoginComponent} from './login/login.component';
-
+import {SearchComponent} from './search/search.component';
 /**
  * Setup all routes here
  */
@@ -23,6 +23,12 @@ const routes: Routes = [
   {
     path: 'login',
     component: LoginComponent,
+    pathMatch: 'full'
+  },
+  // 2
+  {
+    path: 'search',
+    component: SearchComponent,
     pathMatch: 'full'
   },
   {

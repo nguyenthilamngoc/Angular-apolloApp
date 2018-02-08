@@ -4,6 +4,8 @@
     <a [routerLink]="['/']" class='ml1 no-underline black'>new</a>
     <div class="flex" *ngIf="logged">
       <div class="ml1">|</div>
+      <a [routerLink]="['/search']" class='ml1 no-underline black'>search</a>
+      <div class="ml1">|</div>
       <a [routerLink]="['/create']" class='ml1 no-underline black'>submit</a>
     </div>
   </div>
