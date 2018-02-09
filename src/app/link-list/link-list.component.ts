@@ -1,10 +1,10 @@
 import {Component, OnInit, OnDestroy} from '@angular/core';
-import {Apollo} from 'apollo-angular';
+import {Apollo, QueryRef } from 'apollo-angular';
 import {Link} from '../types';
 import {Subscription} from 'rxjs/Subscription';
 import {AuthService} from '../auth.service'
 // 1
-import {ALL_LINKS_QUERY, AllLinkQueryResponse} from '../graphql';
+import {ALL_LINKS_QUERY, AllLinkQueryResponse, NEW_LINKS_SUBSCRIPTION, NewLinkSubcriptionResponse} from '../graphql';
 import { from } from 'rxjs/observable/from';
 
 @Component({
@@ -20,6 +20,7 @@ export class LinkListComponent implements OnInit, OnDestroy {
 
   subscriptions: Subscription[] = [];
 
+
   constructor(private apollo: Apollo, private authService: AuthService) {
   }
 
@@ -31,12 +32,27 @@ export class LinkListComponent implements OnInit, OnDestroy {
         this.logged = isAuthenticated
       });
 
-    const querySubscription = this.apollo.watchQuery({
+    const allLinkQuery: QueryRef<any, any> = this.apollo.watchQuery({
       query: ALL_LINKS_QUERY
-    }).valueChanges.subscribe((response) => {
-      let responseData = response.data as AllLinkQueryResponse;
-      this.allLinks = responseData.allLinks;
-      this.loading = responseData.loading;
+    });
+    
+    allLinkQuery
+      .subscribeToMore({
+        document: NEW_LINKS_SUBSCRIPTION,
+        updateQuery: (previous : AllLinkQueryResponse, { subscriptionData }) => {
+          const newAllLinks = [
+            subscriptionData.data.Link.node,
+            ...previous.allLinks
+          ];
+          return {
+            ...previous,
+            allLinks: newAllLinks
+          }
+        }
+      });
+    const querySubscription = allLinkQuery.valueChanges.subscribe((response) => {
+      this.allLinks = response.data.allLinks;
+      this.loading = response.data.loading;
     });
 
     this.subscriptions = [...this.subscriptions, querySubscription];
@@ -51,4 +67,6 @@ export class LinkListComponent implements OnInit, OnDestroy {
     }
   }
 
+
+    
 }
