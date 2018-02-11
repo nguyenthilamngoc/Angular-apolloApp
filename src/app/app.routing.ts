@@ -12,6 +12,16 @@ import {SearchComponent} from './search/search.component';
 const routes: Routes = [
   {
     path: '',
+    redirectTo: 'new/1',
+    pathMatch: 'full'
+  },
+  {
+    path :'new/:page',
+    component: LinkListComponent,
+    pathMatch: 'full'
+  },
+  {
+    path:'top',
     component: LinkListComponent,
     pathMatch: 'full'
   },
